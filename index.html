@@ -102,6 +102,18 @@ footer{border-top:1px solid var(--line);padding:28px 0 40px;color:var(--muted);f
   .hero h1{font-size:44px}
   .nav-links{display:none}
 }
+.mgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px;margin-top:8px}
+.mcard{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:14px;text-align:center}
+.mcard img{width:100%;border-radius:10px;display:block}
+.mcard .mid{font-family:'Cinzel',serif;color:var(--gold);font-size:17px;margin:10px 0 2px}
+.mcard .mprice{font-weight:700;font-size:16px}
+.mcard .mseller{color:var(--muted);font-size:12.5px;margin:2px 0 10px}
+.mrow{display:flex;align-items:center;gap:12px;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:10px 14px;margin-bottom:10px;flex-wrap:wrap}
+.mrow img{width:52px;height:52px;border-radius:8px}
+.mrow .mtitle{font-family:'Cinzel',serif;color:var(--gold);font-size:16px}
+.mrow .mstate{color:var(--muted);font-size:13.5px}
+.mrow input{width:110px;background:var(--panel2);border:1px solid var(--line);border-radius:8px;color:var(--text);padding:8px 10px;font-size:14px}
+.mrow .spacer{flex:1}
 </style>
 </head>
 <body>
@@ -230,6 +242,14 @@ footer{border-top:1px solid var(--line);padding:28px 0 40px;color:var(--muted);f
       <h2>The market</h2>
       <p>A built-in market opens together with the mint. Sealed boxes can change hands before reveal — trade the mystery, or hold it. Sellers set their own price; a 2.5% fee goes to the treasury.</p>
     </div>
+    <div class="mgrid" id="marketGrid"></div>
+    <div class="status" id="marketStatus"></div>
+    <div style="margin-top:10px"><button class="btn ghost small" id="marketRefresh">Refresh listings</button></div>
+    <div id="yourBoxes" style="margin-top:36px;display:none">
+      <h3 style="font-family:'Cinzel',serif;color:var(--gold);font-size:21px;margin-bottom:6px">Your boxes</h3>
+      <p style="color:var(--muted);font-size:14.5px;margin-top:0">Boxes held by the connected wallet. Set a price to list one — the buyer pays you directly, minus the 2.5% market fee.</p>
+      <div id="boxList"></div>
+    </div>
   </div>
 </section>
 
@@ -308,6 +328,17 @@ const ABI = [
   "function claimFree(bytes32 handleHash, uint256 deadline, bytes signature)",
   "function mintPaid(uint256 qty) payable"
 ];
+const NFT_ABI = ABI.concat([
+  "function ownerOf(uint256 tokenId) view returns (address)",
+  "function getApproved(uint256 tokenId) view returns (address)",
+  "function approve(address to, uint256 tokenId)"
+]);
+const MARKET_ABI = [
+  "function listingOf(uint256 tokenId) view returns (address seller, uint256 price, bool active)",
+  "function list(uint256 tokenId, uint256 price)",
+  "function cancelListing(uint256 tokenId)",
+  "function buy(uint256 tokenId) payable"
+];
 function buildTemplate(){
   const code = account ? account.toLowerCase().slice(-6) : "______";
   return `Forging my Blackscale dragon 🐉
@@ -357,6 +388,7 @@ async function connect(){
   account = await signer.getAddress();
   $("connectBtn").textContent = account.slice(0,6)+"…"+account.slice(-4);
   refreshSupply();
+  loadMarket();
   return account;
 }
 $("connectBtn").onclick = connect;
@@ -404,7 +436,7 @@ $("freeBtn").onclick = async () => {
     const tx = await c.claimFree(permit.handleHash, permit.deadline, permit.signature);
     await tx.wait();
     setStatus("freeStatus","Forged. Your sealed box is in your wallet.","ok");
-    refreshSupply();
+    refreshSupply(); loadMarket();
   }catch(e){ setStatus("freeStatus","The claim was rejected by the contract.","err"); }
 };
 
@@ -423,9 +455,131 @@ $("paidBtn").onclick = async () => {
     const tx = await c.mintPaid(qty, { value: ethers.parseEther((qty*CONFIG.PRICE).toString()) });
     await tx.wait();
     setStatus("paidStatus","Forged. Your sealed box(es) are in your wallet.","ok");
-    refreshSupply();
+    refreshSupply(); loadMarket();
   }catch(e){ setStatus("paidStatus","The mint did not go through.","err"); }
 };
+
+/* ---------- market ---------- */
+function fmtBNB(wei){
+  const s = ethers.formatEther(wei);
+  return (s.includes(".") ? s.replace(/0+$/,"").replace(/\.$/,".0") : s) + " BNB";
+}
+async function readMarket(){ return new ethers.Contract(CONFIG.MARKET, MARKET_ABI, new ethers.JsonRpcProvider(CONFIG.RPC)); }
+async function readNFT(){ return new ethers.Contract(CONFIG.NFT, NFT_ABI, new ethers.JsonRpcProvider(CONFIG.RPC)); }
+async function writeMarket(){
+  if (!(await connect())) return null;
+  const prov = new ethers.BrowserProvider(eip1193);
+  return new ethers.Contract(CONFIG.MARKET, MARKET_ABI, await prov.getSigner());
+}
+async function writeNFT(){
+  if (!(await connect())) return null;
+  const prov = new ethers.BrowserProvider(eip1193);
+  return new ethers.Contract(CONFIG.NFT, NFT_ABI, await prov.getSigner());
+}
+async function inChunks(items, size, fn){
+  const out = [];
+  for (let i = 0; i < items.length; i += size){ out.push(...await Promise.all(items.slice(i, i + size).map(fn))); }
+  return out;
+}
+async function loadMarket(){
+  if (!LIVE) return;
+  const grid = $("marketGrid");
+  try{
+    const nft = await readNFT();
+    const mkt = await readMarket();
+    const n = Number(await nft.totalMinted());
+    if (!n){ grid.innerHTML = ""; setStatus("marketStatus","No boxes forged yet — the first listings appear here once dragons are minted.",""); return; }
+    const ids = Array.from({length:n}, (_,i)=>i+1);
+    const rows = await inChunks(ids, 25, async id => {
+      try{ const l = await mkt.listingOf(id); return { id, seller: l[0], price: l[1], active: l[2] }; }catch(e){ return null; }
+    });
+    const active = rows.filter(r => r && r.active);
+    if (!active.length){ grid.innerHTML = ""; setStatus("marketStatus","No boxes are listed right now. List one of yours below once your wallet is connected.",""); loadBoxes(); return; }
+    setStatus("marketStatus", active.length + (active.length === 1 ? " box" : " boxes") + " for sale","");
+    grid.innerHTML = active.map(r => {
+      const mine = account && r.seller.toLowerCase() === account.toLowerCase();
+      return `<div class="mcard">
+        <img src="images/mystery-box.webp" alt="Sealed Blackscale box #${r.id}">
+        <div class="mid">Blackscale #${r.id}</div>
+        <div class="mprice">${fmtBNB(r.price)}</div>
+        <div class="mseller">Seller ${r.seller.slice(0,6)}…${r.seller.slice(-4)}${mine ? " (you)" : ""}</div>
+        ${mine ? `<button class="btn ghost small" data-cancel="${r.id}">Cancel listing</button>` : `<button class="btn small" data-buy="${r.id}" data-price="${r.price.toString()}">Buy</button>`}
+      </div>`;
+    }).join("");
+    grid.querySelectorAll("[data-buy]").forEach(b => b.onclick = async () => {
+      const id = Number(b.dataset.buy), price = BigInt(b.dataset.price);
+      b.disabled = true; b.textContent = "Buying…";
+      try{
+        const m = await writeMarket(); if (!m){ b.disabled=false; b.textContent="Buy"; return; }
+        const tx = await m.buy(id, { value: price }); await tx.wait();
+        toast("Blackscale #" + id + " is yours."); loadMarket();
+      }catch(e){ toast("The purchase did not go through."); b.disabled=false; b.textContent="Buy"; }
+    });
+    grid.querySelectorAll("[data-cancel]").forEach(b => b.onclick = async () => {
+      const id = Number(b.dataset.cancel);
+      b.disabled = true; b.textContent = "Cancelling…";
+      try{
+        const m = await writeMarket(); if (!m){ b.disabled=false; b.textContent="Cancel listing"; return; }
+        const tx = await m.cancelListing(id); await tx.wait();
+        toast("Listing for #" + id + " cancelled."); loadMarket();
+      }catch(e){ toast("Cancel failed."); b.disabled=false; b.textContent="Cancel listing"; }
+    });
+  }catch(e){ setStatus("marketStatus","Could not load the market right now.","err"); }
+  loadBoxes();
+}
+async function loadBoxes(){
+  const wrap = $("yourBoxes"), list = $("boxList");
+  if (!account){ wrap.style.display = "none"; return; }
+  try{
+    const nft = await readNFT();
+    const mkt = await readMarket();
+    const n = Number(await nft.totalMinted());
+    const ids = Array.from({length:n}, (_,i)=>i+1);
+    const owners = await inChunks(ids, 25, async id => { try{ return await nft.ownerOf(id); }catch(e){ return null; } });
+    const mine = ids.filter((id,i) => owners[i] && owners[i].toLowerCase() === account.toLowerCase());
+    wrap.style.display = "block";
+    if (!mine.length){ list.innerHTML = `<p style="color:var(--muted)">This wallet holds no Blackscale boxes yet.</p>`; return; }
+    const rows = await inChunks(mine, 25, async id => {
+      try{ const l = await mkt.listingOf(id); return { id, price: l[1], active: l[2] }; }catch(e){ return { id, price: 0n, active: false }; }
+    });
+    list.innerHTML = rows.map(r => `<div class="mrow">
+        <img src="images/mystery-box.webp" alt="Sealed Blackscale box #${r.id}">
+        <div><div class="mtitle">Blackscale #${r.id}</div><div class="mstate">${r.active ? "Listed at " + fmtBNB(r.price) : "Not listed"}</div></div>
+        <div class="spacer"></div>
+        ${r.active
+          ? `<button class="btn ghost small" data-mcancel="${r.id}">Cancel listing</button>`
+          : `<input type="number" min="0" step="0.0005" placeholder="Price in BNB" id="price-${r.id}"><button class="btn small" data-list="${r.id}">List for sale</button>`}
+      </div>`).join("");
+    list.querySelectorAll("[data-list]").forEach(b => b.onclick = async () => {
+      const id = Number(b.dataset.list);
+      const v = $("price-" + id).value.trim();
+      const price = Number(v);
+      if (!v || !(price > 0)){ toast("Enter a price in BNB first."); return; }
+      b.disabled = true; b.textContent = "Listing…";
+      try{
+        const n = await writeNFT(); if (!n){ b.disabled=false; b.textContent="List for sale"; return; }
+        const approved = await n.getApproved(id);
+        if (approved.toLowerCase() !== CONFIG.MARKET.toLowerCase()){
+          const atx = await n.approve(CONFIG.MARKET, id); await atx.wait();
+        }
+        const m = await writeMarket(); if (!m){ b.disabled=false; b.textContent="List for sale"; return; }
+        const tx = await m.list(id, ethers.parseEther(v)); await tx.wait();
+        toast("Blackscale #" + id + " listed at " + v + " BNB."); loadMarket();
+      }catch(e){ toast("Listing did not go through."); b.disabled=false; b.textContent="List for sale"; }
+    });
+    list.querySelectorAll("[data-mcancel]").forEach(b => b.onclick = async () => {
+      const id = Number(b.dataset.mcancel);
+      b.disabled = true; b.textContent = "Cancelling…";
+      try{
+        const m = await writeMarket(); if (!m){ b.disabled=false; b.textContent="Cancel listing"; return; }
+        const tx = await m.cancelListing(id); await tx.wait();
+        toast("Listing for #" + id + " cancelled."); loadMarket();
+      }catch(e){ toast("Cancel failed."); b.disabled=false; b.textContent="Cancel listing"; }
+    });
+  }catch(e){ wrap.style.display = "none"; }
+}
+$("marketRefresh").onclick = loadMarket;
+loadMarket();
 
 $("copyPrompt").onclick = async () => {
   try{ await navigator.clipboard.writeText($("agentPrompt").textContent); toast("Agent prompt copied."); }
