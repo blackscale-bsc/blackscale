@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blackscale (BLSC) — 3,000 Fierce Dragons on BNB Chain</title>
+<meta name="description" content="3,000 fierce dragons sealed in obsidian on BNB Smart Chain. First dragon free — post first, then claim. Paid mints 0.001 BNB. All reveal at once.">
+<meta property="og:title" content="Blackscale (BLSC)">
+<meta property="og:description" content="3,000 fierce dragons sealed in obsidian. First one free — post first, then claim.">
+<meta property="og:image" content="images/mystery-box.webp">
+<link rel="icon" href="images/mystery-box.webp">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#050505; --panel:#0d0c0a; --panel2:#12100c; --line:#2a2317;
+  --gold:#e8b64c; --gold2:#f5d67a; --ember:#ff8a3c;
+  --text:#f2ead8; --muted:#a89c83; --bad:#ff6b5e; --good:#7dd87d;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,sans-serif;line-height:1.55}
+h1,h2,h3,.disp{font-family:'Cinzel',serif;letter-spacing:.04em}
+a{color:var(--gold)}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+nav{position:sticky;top:0;z-index:50;background:rgba(5,5,5,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.nav-in{display:flex;align-items:center;gap:22px;height:64px}
+.logo{display:flex;align-items:center;gap:10px;font-family:'Cinzel',serif;font-weight:800;font-size:20px;color:var(--text);text-decoration:none}
+.logo img{width:34px;height:34px;border-radius:8px}
+.logo b{color:var(--gold)}
+.nav-links{display:flex;gap:18px;margin-left:auto}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:14px;font-weight:600}
+.nav-links a:hover{color:var(--gold2)}
+.btn{display:inline-block;background:linear-gradient(180deg,var(--gold2),var(--gold));color:#191203;border:0;border-radius:10px;padding:12px 22px;font-weight:700;font-size:15px;cursor:pointer;text-decoration:none;transition:transform .08s}
+.btn:hover{transform:translateY(-1px)}
+.btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
+.btn.ghost{background:transparent;color:var(--gold);border:1px solid var(--gold)}
+.btn.small{padding:9px 16px;font-size:14px}
+#connectBtn{margin-left:8px}
+.hero{padding:64px 0 30px;background:radial-gradient(900px 480px at 78% 30%,rgba(232,182,76,.10),transparent 60%)}
+.hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:42px;align-items:center}
+.kicker{color:var(--ember);font-weight:700;font-size:13px;letter-spacing:.22em;text-transform:uppercase}
+.hero h1{font-size:64px;line-height:1.02;margin:10px 0 6px}
+.hero h1 span{color:var(--gold)}
+.hero .sub{font-size:19px;color:var(--text);max-width:520px}
+.hero .fine{color:var(--muted);margin-top:10px;max-width:520px;font-size:15px}
+.hero-cta{display:flex;gap:12px;margin-top:26px;flex-wrap:wrap}
+.boximg{width:100%;max-width:470px;display:block;margin:0 auto;filter:drop-shadow(0 24px 60px rgba(232,182,76,.16))}
+.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin:38px 0 6px}
+.stat{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px 14px;text-align:center}
+.stat b{display:block;font-family:'Cinzel',serif;font-size:21px;color:var(--gold)}
+.stat span{color:var(--muted);font-size:12.5px;text-transform:uppercase;letter-spacing:.08em}
+section{padding:52px 0}
+.sec-head{max-width:640px;margin-bottom:26px}
+.sec-head h2{font-size:34px;margin-bottom:8px}
+.sec-head p{color:var(--muted)}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.step{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:22px}
+.step .n{font-family:'Cinzel',serif;color:var(--gold);font-size:15px;letter-spacing:.2em}
+.step h3{font-size:20px;margin:8px 0 6px}
+.step p{color:var(--muted);font-size:14.5px}
+.panels{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:26px}
+.panel h3{font-size:22px;margin-bottom:4px}
+.panel .tag{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.14em;color:#191203;background:var(--gold);border-radius:999px;padding:3px 10px;margin-bottom:12px}
+.panel .tag.dim{background:#241d10;color:var(--gold);border:1px solid var(--line)}
+.panel p{color:var(--muted);font-size:14.5px}
+.field{margin-top:16px}
+.field label{display:block;font-size:13px;font-weight:600;color:var(--muted);margin-bottom:6px}
+.field input{width:100%;background:#080706;border:1px solid var(--line);border-radius:10px;color:var(--text);padding:12px 14px;font-size:15px}
+.field input:focus{outline:1px solid var(--gold)}
+.status{margin-top:12px;font-size:14px;min-height:20px}
+.status.ok{color:var(--good)} .status.err{color:var(--bad)} .status.wait{color:var(--gold2)}
+.qtyrow{display:flex;align-items:center;gap:14px;margin-top:16px}
+.qtybtn{width:42px;height:42px;border-radius:10px;border:1px solid var(--gold);background:transparent;color:var(--gold);font-size:20px;cursor:pointer}
+.qtyval{font-family:'Cinzel',serif;font-size:24px;min-width:44px;text-align:center}
+.costline{margin-top:10px;color:var(--muted);font-size:14.5px}
+.costline b{color:var(--text)}
+.supplyline{margin:22px 0 0;text-align:center;color:var(--muted);font-size:14.5px}
+.supplyline b{color:var(--gold);font-family:'Cinzel',serif;font-size:17px}
+.grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.card img{width:100%;display:block;aspect-ratio:1;object-fit:cover}
+.card div{padding:10px 12px;font-size:13.5px;font-weight:600}
+.card div span{display:block;color:var(--muted);font-weight:400;font-size:12px}
+.sealed{display:grid;grid-template-columns:.9fr 1.1fr;gap:36px;align-items:center}
+.sealed img{width:100%;max-width:380px;border-radius:18px;display:block;margin:0 auto}
+.sealed p{color:var(--muted);margin-top:10px}
+.hashline{margin-top:14px;font-size:12.5px;color:var(--muted);word-break:break-all;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+pre{background:#080706;border:1px solid var(--line);border-radius:12px;padding:16px;overflow-x:auto;font-size:13px;line-height:1.6;color:#e8dfc8;white-space:pre-wrap}
+.faq details{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin-bottom:10px}
+.faq summary{cursor:pointer;font-weight:700}
+.faq p{color:var(--muted);margin-top:8px;font-size:14.5px}
+footer{border-top:1px solid var(--line);padding:28px 0 40px;color:var(--muted);font-size:13.5px;text-align:center}
+#toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(80px);background:#1c1708;border:1px solid var(--gold);color:var(--text);padding:12px 20px;border-radius:12px;font-size:14.5px;opacity:0;transition:all .3s;z-index:99;max-width:90vw;text-align:center}
+#toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+@media(max-width:900px){
+  .hero-grid,.panels,.sealed{grid-template-columns:1fr}
+  .steps{grid-template-columns:1fr}
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .grid{grid-template-columns:repeat(2,1fr)}
+  .hero h1{font-size:44px}
+  .nav-links{display:none}
+}
+</style>
+</head>
+<body>
+<nav>
+  <div class="wrap nav-in">
+    <a class="logo" href="#"><img src="images/mystery-box.webp" alt="">BLACK<b>SCALE</b></a>
+    <div class="nav-links">
+      <a href="#how">How it works</a>
+      <a href="#mint">Mint</a>
+      <a href="#catalog">Catalog</a>
+      <a href="#market">Market</a>
+      <a href="#agents">For agents</a>
+      <a href="#faq">FAQ</a>
+    </div>
+    <button class="btn small" id="connectBtn">Connect Wallet</button>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="kicker">BNB Smart Chain · ERC-721</div>
+      <h1>BLACK<span>SCALE</span></h1>
+      <p class="sub">3,000 fierce dragons, sealed in obsidian. No one knows which dragon sleeps in their box — until every box opens at once.</p>
+      <p class="fine">Your first dragon is <b style="color:var(--gold2)">free</b> — if you post first. After that, 0.001 BNB each, no post needed.</p>
+      <div class="hero-cta">
+        <a class="btn" href="#mint">Claim your free dragon</a>
+        <a class="btn ghost" href="#catalog">See the catalog</a>
+      </div>
+    </div>
+    <div><img class="boximg" src="images/mystery-box.gif" alt="The Blackscale mystery box"></div>
+  </div>
+  <div class="wrap">
+    <div class="stats">
+      <div class="stat"><b>3,000</b><span>Dragons</span></div>
+      <div class="stat"><b>1 free</b><span>Per wallet</span></div>
+      <div class="stat"><b>0.001 BNB</b><span>Paid mint</span></div>
+      <div class="stat"><b>7 days</b><span>Mint window</span></div>
+      <div class="stat"><b id="statMinted">—</b><span>Forged so far</span></div>
+    </div>
+  </div>
+</header>
+
+<section id="how">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>Post first. Then claim.</h2>
+      <p>The free dragon is earned in the open. Three steps, no exceptions — the contract itself enforces them.</p>
+    </div>
+    <div class="steps">
+      <div class="step"><div class="n">STEP 1</div><h3>Post the call</h3><p>Share the ready-made post on X. One tap fills it in — you press post.</p></div>
+      <div class="step"><div class="n">STEP 2</div><h3>Prove it</h3><p>Paste your post link below. We check it is yours and carries the call.</p></div>
+      <div class="step"><div class="n">STEP 3</div><h3>Claim the box</h3><p>A signed permit unlocks your free claim. One post, one wallet, one dragon.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="mint" style="padding-top:10px">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>Forge yours</h2>
+      <p id="windowLine">The forge opens Saturday, 14 November 2026 at 20:30 WIB (UTC+7) — and stays open for exactly 7 days. Then never again.</p>
+    </div>
+    <div class="panels">
+      <div class="panel">
+        <span class="tag">FREE — POST FIRST</span>
+        <h3>Your first dragon</h3>
+        <p>One per wallet. Your X post is verified before the permit is issued, and the contract checks the permit — nobody skips the line.</p>
+        <div class="field">
+          <button class="btn ghost" id="postBtn" style="width:100%">1 · Post on X</button>
+        </div>
+        <div class="field">
+          <label for="postUrl">2 · Your post link</label>
+          <input id="postUrl" type="url" placeholder="https://x.com/you/status/…">
+        </div>
+        <div class="field">
+          <button class="btn" id="freeBtn" style="width:100%">3 · Verify &amp; claim free</button>
+        </div>
+        <div class="status" id="freeStatus"></div>
+      </div>
+      <div class="panel">
+        <span class="tag dim">PAID — NO POST NEEDED</span>
+        <h3>More dragons</h3>
+        <p>Straight purchase. As many as you want while the window is open and stock remains.</p>
+        <div class="qtyrow">
+          <button class="qtybtn" id="qMinus">−</button>
+          <div class="qtyval" id="qVal">1</div>
+          <button class="qtybtn" id="qPlus">+</button>
+        </div>
+        <div class="costline">Total: <b id="costVal">0.001 BNB</b></div>
+        <div class="field">
+          <button class="btn" id="paidBtn" style="width:100%">Mint now</button>
+        </div>
+        <div class="status" id="paidStatus"></div>
+      </div>
+    </div>
+    <p class="supplyline"><b id="supplyVal">— / 3,000</b> dragons forged · every mint arrives as a sealed box</p>
+  </div>
+</section>
+
+<section id="catalog">
+  <div class="wrap">
+    <div style="text-align:center;padding:26px 0 10px">
+      <div class="kicker">The Catalog</div>
+      <h2 style="font-size:44px;margin:12px 0 8px">COMING <span style="color:var(--gold)">SOON</span></h2>
+      <p style="color:var(--muted)">Every dragon stays sealed until reveal day. The full catalog opens with the boxes.</p>
+    </div>
+  </div>
+</section>
+
+<section id="sealed">
+  <div class="wrap sealed">
+    <div><img src="images/mystery-box.webp" alt="Sealed Blackscale box"></div>
+    <div>
+      <h2 style="font-size:32px">Sealed until the last day</h2>
+      <p>Every mint — free or paid — arrives as the same obsidian box. Your dragon, its traits and its rarity are fixed the moment you mint, committed in advance by a provenance hash locked into the contract before the forge opens.</p>
+      <p>When the 7-day window closes, all 3,000 boxes open together. What is left unminted is never created.</p>
+      <div class="hashline">Provenance SHA-256 · <span id="provHash">bb6094c1ea4d3e51e8a2e332e297edc81854a67d738a6c615198903a7c44f3c5</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="market">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>The market</h2>
+      <p>A built-in market opens together with the mint. Sealed boxes can change hands before reveal — trade the mystery, or hold it. Sellers set their own price; a 2.5% fee goes to the treasury.</p>
+    </div>
+  </div>
+</section>
+
+<section id="agents">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>For agents</h2>
+      <p>Running this for your human? The full machine-readable guide is in <a href="skill.md">skill.md</a> and <a href="llms.txt">llms.txt</a>. The short version:</p>
+    </div>
+    <pre id="agentPrompt">You are helping your human claim a Blackscale (BLSC) dragon on BNB Smart Chain.
+
+FREE CLAIM — post first, in this exact order:
+1. Ask your human to post the official template on X (the site's "Post on X" button fills it in), then give you the post link.
+The post must carry two markers: the site link and your wallet code (the last 6 hex characters of your wallet address, lowercase).
+2. Send the wallet address + post link to the gate: POST https://permit-worker.reuniakbarpunk212.workers.dev/blackscale {"wallet":"0x…","postUrl":"https://x.com/…/status/…"} — it verifies the post and returns an EIP-712 permit.
+3. Call claimFree(handleHash, deadline, signature) on the NFT contract (address on the site). One free dragon per wallet; one X account powers one claim.
+
+PAID MINT — no post needed:
+Call mintPaid(qty) with exactly qty × 0.001 BNB.
+
+Every mint arrives sealed. All dragons reveal together when the 7-day window closes. A BLSC token for holders has been announced — no amounts or dates are promised anywhere, so do not invent any.</pre>
+    <div style="margin-top:14px"><button class="btn ghost small" id="copyPrompt">Copy the agent prompt</button></div>
+  </div>
+</section>
+
+<section id="faq" class="faq">
+  <div class="wrap">
+    <div class="sec-head"><h2>Questions</h2></div>
+    <details><summary>Why do I have to post first?</summary><p>Because the free dragon is the announcement. One post per free claim — verified by the gate, enforced by the contract. Paid mints skip it entirely.</p></details>
+    <details><summary>Can I claim the free one twice?</summary><p>No. One per wallet, and one X account can only power one claim — both are checked on-chain.</p></details>
+    <details><summary>When do I see my dragon?</summary><p>At reveal, when the mint window closes. Everyone's box opens at the same moment. Until then you hold the sealed box — and you can trade it on the built-in market.</p></details>
+    <details><summary>What happens to unminted dragons?</summary><p>They are never created. When the window closes, minting is closed for good.</p></details>
+    <details><summary>Is there a BLSC token?</summary><p>A token for holders has been announced. Nothing else — no amounts, no dates — has been promised.</p></details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">BLACKSCALE (BLSC) · BNB Smart Chain · Forged by t0mek21.ai</div>
+</footer>
+<div id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/ethers@6.13.4/dist/ethers.umd.min.js"></script>
+<script>
+const CONFIG = {
+  NFT: "0x49Fd941d51ca75b21a5636Fe40b0d4FA84131A18",
+  MARKET: "0x46A2a0E39FF4109fFcB88c9B63A5EFC8eD5987D8",
+  GATE: "https://permit-worker.reuniakbarpunk212.workers.dev/blackscale",
+  SITE_URL: "https://blackscale-bsc.github.io/blackscale/",
+  RPC: "https://bsc-dataseed.binance.org",
+  PRICE: 0.001,
+  MAX: 3000,
+  START_TS: 1794663000, END_TS: 1795267800,
+  WC_PROJECT_ID: "ff5985647ed78916bed0155d2ff84a1c"
+};
+const LIVE = CONFIG.NFT !== "0x0000000000000000000000000000000000000000";
+const ABI = [
+  "function totalMinted() view returns (uint256)",
+  "function freeClaimed(address) view returns (bool)",
+  "function claimFree(bytes32 handleHash, uint256 deadline, bytes signature)",
+  "function mintPaid(uint256 qty) payable"
+];
+function buildTemplate(){
+  const code = account ? account.toLowerCase().slice(-6) : "______";
+  return `Forging my Blackscale dragon 🐉
+
+3,000 fierce dragons sealed in obsidian on BNB Chain.
+
+First one is free — if you post first.
+
+My wallet code: ${code}
+
+Start here:
+${CONFIG.SITE_URL}
+
+#Blackscale #BLSC`;
+}
+
+let eip1193 = null, account = null;
+const $ = id => document.getElementById(id);
+function toast(msg){ const t=$("toast"); t.textContent=msg; t.classList.add("show"); setTimeout(()=>t.classList.remove("show"), 4200); }
+function setStatus(id, msg, cls){ const el=$(id); el.textContent=msg; el.className="status "+(cls||""); }
+
+async function loadWC(){
+  if (window["@walletconnect/ethereum-provider"]) return true;
+  for (const u of ["https://unpkg.com/@walletconnect/ethereum-provider@2.21.0/dist/index.umd.js","https://cdn.jsdelivr.net/npm/@walletconnect/ethereum-provider@2.21.0/dist/index.umd.js"]){
+    try{ await new Promise((res,rej)=>{ const sc=document.createElement("script"); sc.src=u; sc.onload=res; sc.onerror=rej; document.head.appendChild(sc); }); if (window["@walletconnect/ethereum-provider"]) return true; }catch(e){}
+  }
+  return false;
+}
+async function connect(){
+  if (account) return account;
+  if (window.ethereum){
+    eip1193 = window.ethereum;
+  } else {
+    if (!(await loadWC())){ toast("No wallet found — install a wallet or try WalletConnect from a desktop browser."); return null; }
+    eip1193 = await window["@walletconnect/ethereum-provider"].EthereumProvider.init({ projectId: CONFIG.WC_PROJECT_ID, chains:[56], optionalChains:[56], showQrModal:true, rpcMap:{ 56: CONFIG.RPC } });
+    await eip1193.connect();
+  }
+  const prov = new ethers.BrowserProvider(eip1193);
+  const net = await prov.getNetwork();
+  if (Number(net.chainId) !== 56){
+    try{ await eip1193.request({ method:"wallet_switchEthereumChain", params:[{ chainId:"0x38" }] }); }
+    catch(e){ toast("Please switch your wallet to BNB Smart Chain."); return null; }
+  }
+  const signer = await prov.getSigner();
+  account = await signer.getAddress();
+  $("connectBtn").textContent = account.slice(0,6)+"…"+account.slice(-4);
+  refreshSupply();
+  return account;
+}
+$("connectBtn").onclick = connect;
+
+async function readContract(){
+  const rpc = new ethers.JsonRpcProvider(CONFIG.RPC);
+  return new ethers.Contract(CONFIG.NFT, ABI, rpc);
+}
+async function writeContract(){
+  if (!(await connect())) return null;
+  const prov = new ethers.BrowserProvider(eip1193);
+  return new ethers.Contract(CONFIG.NFT, ABI, await prov.getSigner());
+}
+async function refreshSupply(){
+  if (!LIVE) return;
+  try{
+    const c = await readContract();
+    const n = Number(await c.totalMinted());
+    $("supplyVal").textContent = n.toLocaleString("en-US")+" / 3,000";
+    $("statMinted").textContent = n.toLocaleString("en-US");
+  }catch(e){}
+}
+refreshSupply();
+
+$("postBtn").onclick = async () => {
+  if (!account){ const a = await connect(); if (!a) return; }
+  window.open("https://x.com/intent/tweet?text="+encodeURIComponent(buildTemplate()), "_blank", "noopener");
+};
+
+$("freeBtn").onclick = async () => {
+  if (!LIVE){ toast("The forge is not open yet."); return; }
+  const url = $("postUrl").value.trim();
+  if (!url){ setStatus("freeStatus","Paste your post link first.","err"); return; }
+  if (!(await connect())) return;
+  setStatus("freeStatus","Checking your post…","wait");
+  let permit;
+  try{
+    const r = await fetch(CONFIG.GATE, { method:"POST", headers:{ "Content-Type":"application/json" }, body: JSON.stringify({ wallet: account, postUrl: url }) });
+    permit = await r.json();
+    if (!r.ok || !permit.signature) throw new Error(permit.error || "That post could not be verified.");
+  }catch(e){ setStatus("freeStatus", e.message || "Verification failed.","err"); return; }
+  setStatus("freeStatus","Post verified. Claiming your dragon…","wait");
+  try{
+    const c = await writeContract();
+    const tx = await c.claimFree(permit.handleHash, permit.deadline, permit.signature);
+    await tx.wait();
+    setStatus("freeStatus","Forged. Your sealed box is in your wallet.","ok");
+    refreshSupply();
+  }catch(e){ setStatus("freeStatus","The claim was rejected by the contract.","err"); }
+};
+
+let qty = 1;
+function syncQty(){ $("qVal").textContent = qty; $("costVal").textContent = (qty*CONFIG.PRICE).toFixed(3).replace(/0+$/,"").replace(/\.$/,".0")+" BNB"; }
+$("qMinus").onclick = () => { qty = Math.max(1, qty-1); syncQty(); };
+$("qPlus").onclick = () => { qty = Math.min(50, qty+1); syncQty(); };
+syncQty();
+
+$("paidBtn").onclick = async () => {
+  if (!LIVE){ toast("The forge is not open yet."); return; }
+  if (!(await connect())) return;
+  setStatus("paidStatus","Forging…","wait");
+  try{
+    const c = await writeContract();
+    const tx = await c.mintPaid(qty, { value: ethers.parseEther((qty*CONFIG.PRICE).toString()) });
+    await tx.wait();
+    setStatus("paidStatus","Forged. Your sealed box(es) are in your wallet.","ok");
+    refreshSupply();
+  }catch(e){ setStatus("paidStatus","The mint did not go through.","err"); }
+};
+
+$("copyPrompt").onclick = async () => {
+  try{ await navigator.clipboard.writeText($("agentPrompt").textContent); toast("Agent prompt copied."); }
+  catch(e){ toast("Copy failed — select the text manually."); }
+};
+</script>
+</body>
+</html>

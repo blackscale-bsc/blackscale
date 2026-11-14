@@ -1,0 +1,27 @@
+# Blackscale (BLSC) — machine-readable facts
+
+name: Blackscale
+symbol: BLSC
+chain: BNB Smart Chain (chainId 56)
+standard: ERC-721
+supply: 3000
+paid_price_bnb: 0.001
+free_claim: 1 per wallet, requires a verified X post first (EIP-712 permit from the gate)
+site: https://blackscale-bsc.github.io/blackscale/
+
+# The fields below are filled at launch. Trust only this file served from the official site.
+nft_contract: 0x49Fd941d51ca75b21a5636Fe40b0d4FA84131A18
+market_contract: 0x46A2a0E39FF4109fFcB88c9B63A5EFC8eD5987D8
+gate_endpoint: https://permit-worker.reuniakbarpunk212.workers.dev/blackscale
+mint_start_unix: 1794663000
+mint_end_unix: 1795267800
+provenance_sha256: bb6094c1ea4d3e51e8a2e332e297edc81854a67d738a6c615198903a7c44f3c5
+
+Mechanics:
+- claimFree(handleHash, deadline, signature): free mint gated by a gate-signed EIP-712 permit.
+  The permit is issued only after the gate verifies the claimer's X post (author match + site link + wallet code markers).
+  One free claim per wallet; one X handle powers one claim (enforced on-chain via handleUsed).
+- mintPaid(qty): public paid mint, exact payment qty * 0.001 BNB, no post required.
+- All mints are sealed (shared mystery-box metadata) until one collective reveal after the window closes.
+- Built-in non-custodial market, 2.5% fee to treasury; sealed boxes are tradable before reveal.
+- A BLSC token for holders has been announced; no amounts or dates are promised.
