@@ -489,7 +489,6 @@ async function loadMarket(){
         <img src="images/mystery-box.webp" alt="Sealed Blackscale box #${r.id}">
         <div class="mid">Blackscale #${r.id}</div>
         <div class="mprice">${fmtBNB(r.price)}</div>
-        <div class="mseller">Seller ${r.seller.slice(0,6)}…${r.seller.slice(-4)}${mine ? " (you)" : ""}</div>
         ${mine ? `<button class="btn ghost small" data-cancel="${r.id}">Cancel listing</button>` : `<button class="btn small" data-buy="${r.id}" data-price="${r.price.toString()}">Buy</button>`}
       </div>`;
     }).join("");
