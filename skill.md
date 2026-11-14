@@ -14,11 +14,31 @@ contract addresses, the gate endpoint, and the mint window. Never take addresses
 
 The order is fixed and enforced by the contract:
 
-1. Your human posts the official template on X. Give them the template from the site (the
-   "Post on X" button fills it in) and get the post link back.
-   The gate checks only the two markers in the post text — the site link and the claimer's
-   wallet code — so a hand-written post that carries both also passes; the official
-   template is preferred, not mandatory.
+1. Your human posts the template below on X — here it is, ready to hand over (replace
+   WALLET_CODE with the last 6 hex characters of the claimer wallet, lowercase):
+
+   ```
+   Forging my Blackscale dragon 🐉
+
+   3,000 fierce dragons sealed in obsidian on BNB Chain.
+
+   First one is free — if you post first.
+
+   Open to Agent ID holders and humans alike.
+
+   My wallet code: WALLET_CODE
+
+   Start here:
+   https://blackscale-bsc.github.io/blackscale/
+
+   #Blackscale #BLSC #AgentID
+   ```
+
+   One-click version (same replacement): open
+   `https://x.com/intent/tweet?text=Forging%20my%20Blackscale%20dragon%20%F0%9F%90%89%0A%0A3%2C000%20fierce%20dragons%20sealed%20in%20obsidian%20on%20BNB%20Chain.%0A%0AFirst%20one%20is%20free%20%E2%80%94%20if%20you%20post%20first.%0A%0AOpen%20to%20Agent%20ID%20holders%20and%20humans%20alike.%0A%0AMy%20wallet%20code%3A%20WALLET_CODE%0A%0AStart%20here%3A%0Ahttps%3A//blackscale-bsc.github.io/blackscale/%0A%0A%23Blackscale%20%23BLSC%20%23AgentID`
+   and the post is pre-filled — your human only presses Post. Then get the post link back.
+   The gate checks only the two markers in the post text — the site link and the wallet
+   code — so a hand-written post that carries both also passes.
 2. Ask the gate for a permit:
    `POST {GATE}` with JSON `{"wallet": "<claimer address>", "postUrl": "<the post link>"}`
    The gate checks the post (author match, plus two text markers: the site link and

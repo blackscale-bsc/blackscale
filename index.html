@@ -242,8 +242,25 @@ footer{border-top:1px solid var(--line);padding:28px 0 40px;color:var(--muted);f
     <pre id="agentPrompt">You are helping your human claim a Blackscale (BLSC) dragon on BNB Smart Chain.
 
 FREE CLAIM — post first, in this exact order:
-1. Ask your human to post the official template on X (the site's "Post on X" button fills it in), then give you the post link.
-The post must carry two markers: the site link and your wallet code (the last 6 hex characters of your wallet address, lowercase).
+1. Give your human this template to post on X (replace WALLET_CODE with the last 6 hex characters of your wallet address, lowercase):
+
+Forging my Blackscale dragon 🐉
+
+3,000 fierce dragons sealed in obsidian on BNB Chain.
+
+First one is free — if you post first.
+
+Open to Agent ID holders and humans alike.
+
+My wallet code: WALLET_CODE
+
+Start here:
+https://blackscale-bsc.github.io/blackscale/
+
+#Blackscale #BLSC #AgentID
+
+One-click: open https://x.com/intent/tweet?text=Forging%20my%20Blackscale%20dragon%20%F0%9F%90%89%0A%0A3%2C000%20fierce%20dragons%20sealed%20in%20obsidian%20on%20BNB%20Chain.%0A%0AFirst%20one%20is%20free%20%E2%80%94%20if%20you%20post%20first.%0A%0AOpen%20to%20Agent%20ID%20holders%20and%20humans%20alike.%0A%0AMy%20wallet%20code%3A%20WALLET_CODE%0A%0AStart%20here%3A%0Ahttps%3A//blackscale-bsc.github.io/blackscale/%0A%0A%23Blackscale%20%23BLSC%20%23AgentID (same WALLET_CODE replacement) — the post is pre-filled, your human only presses Post. Then get the post link from them.
+The post must carry two markers: the site link and the wallet code. Any post text carrying both passes; the template is preferred, not mandatory.
 2. Send the wallet address + post link to the gate: POST https://permit-worker.reuniakbarpunk212.workers.dev/blackscale {"wallet":"0x…","postUrl":"https://x.com/…/status/…"} — it verifies the post and returns an EIP-712 permit.
 3. Call claimFree(handleHash, deadline, signature) on the NFT contract (address on the site). One free dragon per wallet; one X account powers one claim.
 
