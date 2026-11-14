@@ -16,6 +16,9 @@ The order is fixed and enforced by the contract:
 
 1. Your human posts the official template on X. Give them the template from the site (the
    "Post on X" button fills it in) and get the post link back.
+   The gate checks only the two markers in the post text — the site link and the claimer's
+   wallet code — so a hand-written post that carries both also passes; the official
+   template is preferred, not mandatory.
 2. Ask the gate for a permit:
    `POST {GATE}` with JSON `{"wallet": "<claimer address>", "postUrl": "<the post link>"}`
    The gate checks the post (author match, plus two text markers: the site link and
